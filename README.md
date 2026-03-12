@@ -18,6 +18,7 @@ Author: `starboyash`
   - Deletes old server log files
   - Truncates `latest.log`
   - Deletes crash reports
+  - Uses ProtocolLib to hide the command from server console logging when ProtocolLib is installed
 - Bypass visibility
   - Players with bypass permission can still see vanished and invisible staff
   - Vanished players show in tab as red with strikethrough for bypass viewers
@@ -104,3 +105,4 @@ build/libs/ODYAdminCommands-1.0.3.jar
 - No Floodgate integration is required for the current feature set
 - Auto-update stages the new jar for the next restart; it does not hot-swap the running plugin
 - GitHub repo selection and release-asset selection are intentionally not configurable
+- `/cleanlogs` still works without ProtocolLib, but it cannot be hidden from console logging in that case

@@ -3,6 +3,8 @@ version: ${version}
 main: com.odyadmincommands.ODYAdminCommandsPlugin
 api-version: '1.21'
 author: starboyash
+softdepend:
+  - ProtocolLib
 commands:
   vanish:
     description: Toggle offline-style admin vanish.

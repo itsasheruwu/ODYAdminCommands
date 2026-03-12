@@ -54,6 +54,10 @@ public final class ODYAdminCommandsPlugin extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new VanishListener(this, this.vanishService), this);
         Bukkit.getPluginManager().registerEvents(new SilentCommandListener(cleanLogsCommand), this);
+        if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+            new ProtocolLibCleanLogsIntegration(this, cleanLogsCommand).register();
+            getLogger().info("ProtocolLib detected. /cleanlogs console logging will be suppressed.");
+        }
 
         this.vanishService.refreshConfiguredOfflineAliases();
         this.vanishService.reapplyToOnlinePlayers();
