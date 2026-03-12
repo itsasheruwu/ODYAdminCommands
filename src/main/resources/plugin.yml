@@ -1,0 +1,31 @@
+name: ODYAdminCommands
+version: ${version}
+main: com.odyadmincommands.ODYAdminCommandsPlugin
+api-version: '1.21'
+author: starboyash
+commands:
+  vanish:
+    description: Toggle offline-style admin vanish.
+    usage: /vanish
+    permission: odyadmincommands.vanish
+    permission-message: You do not have permission to use this command.
+  invis:
+    description: Toggle physical invisibility from non-bypass players.
+    usage: /invis
+    permission: odyadmincommands.invis
+    permission-message: You do not have permission to use this command.
+  vanishchatconfirm:
+    description: Internal command for vanished chat confirmation.
+    usage: /vanishchatconfirm <token>
+    permission: odyadmincommands.vanish
+    permission-message: You do not have permission to use this command.
+permissions:
+  odyadmincommands.vanish:
+    description: Allows the player to toggle offline-style vanish.
+    default: op
+  odyadmincommands.invis:
+    description: Allows the player to toggle invisibility.
+    default: op
+  odyadmincommands.vanish.bypass:
+    description: Allows the player to see vanished or invisible players and bypass offline-style vanish checks.
+    default: op
