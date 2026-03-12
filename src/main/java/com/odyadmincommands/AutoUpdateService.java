@@ -10,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.Duration;
-import java.util.Comparator;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,6 +17,9 @@ import java.util.logging.Level;
 import org.bukkit.configuration.ConfigurationSection;
 
 public final class AutoUpdateService {
+    private static final String GITHUB_OWNER = "itsasheruwu";
+    private static final String GITHUB_REPO = "ODYAdminCommands";
+    private static final String RELEASE_ASSET_NAME = "ODYAdminCommands.jar";
     private static final Pattern TAG_NAME_PATTERN = Pattern.compile("\"tag_name\"\\s*:\\s*\"([^\"]+)\"");
     private static final Pattern ASSET_PATTERN = Pattern.compile(
         "\\{[^\\{]*?\"name\"\\s*:\\s*\"([^\"]+)\"[^\\{]*?\"browser_download_url\"\\s*:\\s*\"([^\"]+)\"[^\\{]*?\\}",
@@ -41,16 +43,9 @@ public final class AutoUpdateService {
             return;
         }
 
-        String owner = updater.getString("github-owner", "").trim();
-        String repo = updater.getString("github-repo", "").trim();
-        if (owner.isEmpty() || repo.isEmpty()) {
-            this.plugin.getLogger().warning("Auto-update is enabled but github-owner/github-repo is not configured.");
-            return;
-        }
-
         this.plugin.getServer().getAsyncScheduler().runNow(this.plugin, task -> {
             try {
-                LatestRelease latestRelease = fetchLatestRelease(owner, repo, updater.getString("asset-name", "").trim());
+                LatestRelease latestRelease = fetchLatestRelease();
                 String currentVersion = this.plugin.getPluginMeta().getVersion();
                 if (!isNewerVersion(normalizeVersion(latestRelease.tagName()), normalizeVersion(currentVersion))) {
                     this.plugin.getLogger().info("Auto-update check: already on the latest release (" + currentVersion + ").");
@@ -72,9 +67,9 @@ public final class AutoUpdateService {
         });
     }
 
-    private LatestRelease fetchLatestRelease(String owner, String repo, String configuredAssetName) throws IOException, InterruptedException {
+    private LatestRelease fetchLatestRelease() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("https://api.github.com/repos/" + owner + "/" + repo + "/releases/latest"))
+            .uri(URI.create("https://api.github.com/repos/" + GITHUB_OWNER + "/" + GITHUB_REPO + "/releases/latest"))
             .timeout(Duration.ofSeconds(15))
             .header("Accept", "application/vnd.github+json")
             .header("User-Agent", "ODYAdminCommands-Updater")
@@ -87,36 +82,25 @@ public final class AutoUpdateService {
 
         String body = response.body();
         String tagName = extractRequired(body, TAG_NAME_PATTERN, "tag_name");
-        Optional<ReleaseAsset> asset = findPreferredAsset(body, configuredAssetName);
+        Optional<ReleaseAsset> asset = findReleaseAsset(body);
         if (asset.isEmpty()) {
-            throw new IOException("No matching .jar asset was found in the latest release");
+            throw new IOException("Release asset '" + RELEASE_ASSET_NAME + "' was not found in the latest release");
         }
 
         return new LatestRelease(tagName, asset.get().name(), asset.get().downloadUrl());
     }
 
-    private Optional<ReleaseAsset> findPreferredAsset(String body, String configuredAssetName) {
+    private Optional<ReleaseAsset> findReleaseAsset(String body) {
         Matcher matcher = ASSET_PATTERN.matcher(body);
-        ReleaseAsset fallback = null;
-
         while (matcher.find()) {
             String assetName = unescapeJson(matcher.group(1));
             String downloadUrl = unescapeJson(matcher.group(2));
-            if (!assetName.endsWith(".jar")) {
-                continue;
-            }
-
-            ReleaseAsset current = new ReleaseAsset(assetName, downloadUrl);
-            if (!configuredAssetName.isBlank() && assetName.equals(configuredAssetName)) {
-                return Optional.of(current);
-            }
-
-            if (fallback == null) {
-                fallback = current;
+            if (assetName.equals(RELEASE_ASSET_NAME)) {
+                return Optional.of(new ReleaseAsset(assetName, downloadUrl));
             }
         }
 
-        return Optional.ofNullable(fallback);
+        return Optional.empty();
     }
 
     private void downloadReleaseAsset(String downloadUrl, Path targetFile) throws IOException, InterruptedException {

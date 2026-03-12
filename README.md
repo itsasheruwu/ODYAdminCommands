@@ -67,15 +67,11 @@ Auto update settings:
 ```yaml
 auto-update:
   enabled: true
-  github-owner: itsasheruwu
-  github-repo: ODYAdminCommands
-  asset-name: ""
 ```
 
 - `enabled`: turns startup update checks on or off
-- `github-owner`: GitHub owner or organization
-- `github-repo`: GitHub repository name
-- `asset-name`: optional exact asset name to download; when blank, the first `.jar` from the latest release is used
+- The updater is hardcoded to `itsasheruwu/ODYAdminCommands`
+- The updater is hardcoded to download the release asset named `ODYAdminCommands.jar`
 
 ## Build
 
@@ -101,3 +97,4 @@ build/libs/ODYAdminCommands-1.0.1.jar
 - Designed to remain usable for Bedrock players joining through Geyser
 - No Floodgate integration is required for the current feature set
 - Auto-update stages the new jar for the next restart; it does not hot-swap the running plugin
+- GitHub repo selection and release-asset selection are intentionally not configurable
