@@ -1,4 +1,8 @@
 offline-command-aliases:
   - msg
+  - tell
+  - whisper
+  - w
+  - pm
 auto-update:
   enabled: true

@@ -2,14 +2,14 @@
 
 `ODYAdminCommands` is a Paper `1.21.11` admin plugin focused on lightweight staff stealth tools.
 
-Current version: `1.0.4`  
+Current version: `1.0.5`  
 Author: `starboyash`
 
 ## Features
 
 - `/vanish`
   - Hides the player from the tab list for normal players
-  - Makes vanished players appear offline to configured private-message commands like `/msg`
+  - Makes vanished players appear offline to configured private-message commands like `/msg`, `/tell`, `/whisper`, `/w`, and `/pm`
   - Suppresses join and quit messages while vanished
   - Blocks normal public chat while vanished and asks for confirmation before sending
 - `/invis`
@@ -24,7 +24,6 @@ Author: `starboyash`
   - Supports player and command-name tab completion
 - Bypass visibility
   - Players with bypass permission can still see vanished and invisible staff
-  - Vanished players show in tab as red with strikethrough for bypass viewers
 - Persistent state
   - Vanish and invis states survive reconnects and restarts
 - Auto update
@@ -70,6 +69,10 @@ Default `config.yml`:
 ```yaml
 offline-command-aliases:
   - msg
+  - tell
+  - whisper
+  - w
+  - pm
 ```
 
 `offline-command-aliases` controls which private-message style commands should treat vanished players as offline for non-bypass players.
@@ -100,7 +103,7 @@ Build with the Gradle wrapper:
 Output jar:
 
 ```text
-build/libs/ODYAdminCommands-1.0.4.jar
+build/libs/ODYAdminCommands-1.0.5.jar
 ```
 
 ## Notes

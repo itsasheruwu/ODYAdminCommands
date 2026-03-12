@@ -30,7 +30,7 @@ public final class VanishService {
     private final Set<UUID> invisiblePlayers = new HashSet<>();
     private final Map<UUID, PendingChatConfirmation> pendingChatConfirmations = new HashMap<>();
     private final Map<UUID, String> approvedChatMessages = new HashMap<>();
-    private Set<String> offlineCommandAliases = Set.of("msg");
+    private Set<String> offlineCommandAliases = Set.of("msg", "tell", "whisper", "w", "pm");
 
     public VanishService(ODYAdminCommandsPlugin plugin) {
         this.plugin = plugin;
@@ -59,7 +59,7 @@ public final class VanishService {
     public void refreshConfiguredOfflineAliases() {
         this.offlineCommandAliases = this.plugin.loadOfflineCommandAliases();
         if (this.offlineCommandAliases.isEmpty()) {
-            this.offlineCommandAliases = Set.of("msg");
+            this.offlineCommandAliases = Set.of("msg", "tell", "whisper", "w", "pm");
         }
     }
 
@@ -161,11 +161,6 @@ public final class VanishService {
     }
 
     public void updateAppearance(Player player) {
-        if (isVanished(player)) {
-            player.playerListName(Component.text(player.getName(), NamedTextColor.RED, TextDecoration.STRIKETHROUGH));
-            return;
-        }
-
         player.playerListName(Component.text(player.getName()));
     }
 
