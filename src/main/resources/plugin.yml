@@ -26,6 +26,11 @@ commands:
     usage: /cleanlogs
     permission: odyadmincommands.cleanlogs
     permission-message: You do not have permission to use this command.
+  sudo:
+    description: Run a command as another online player.
+    usage: /sudo <player> <command>
+    permission: odyadmincommands.sudo
+    permission-message: You do not have permission to use this command.
 permissions:
   odyadmincommands.vanish:
     description: Allows the player to toggle offline-style vanish.
@@ -35,6 +40,9 @@ permissions:
     default: op
   odyadmincommands.cleanlogs:
     description: Allows the player to clean server logs and crash reports.
+    default: op
+  odyadmincommands.sudo:
+    description: Allows running commands as another online player.
     default: op
   odyadmincommands.vanish.bypass:
     description: Allows the player to see vanished or invisible players and bypass offline-style vanish checks.

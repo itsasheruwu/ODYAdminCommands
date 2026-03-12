@@ -38,6 +38,10 @@ public final class ODYAdminCommandsPlugin extends JavaPlugin {
         if (cleanLogsCommand == null) {
             throw new IllegalStateException("Command 'cleanlogs' was not defined in plugin.yml");
         }
+        PluginCommand sudoCommand = getCommand("sudo");
+        if (sudoCommand == null) {
+            throw new IllegalStateException("Command 'sudo' was not defined in plugin.yml");
+        }
 
         vanishCommand.setExecutor(new ToggleStateCommand(
             "/vanish",
@@ -51,6 +55,8 @@ public final class ODYAdminCommandsPlugin extends JavaPlugin {
         ));
         confirmChatCommand.setExecutor(new ConfirmChatCommand(this.vanishService));
         cleanLogsCommand.setExecutor(new CleanLogsCommand(this.logCleanupService));
+        sudoCommand.setExecutor(new SudoCommand());
+        sudoCommand.setTabCompleter(new SudoTabCompleter());
 
         Bukkit.getPluginManager().registerEvents(new VanishListener(this, this.vanishService), this);
         Bukkit.getPluginManager().registerEvents(new SilentCommandListener(cleanLogsCommand), this);

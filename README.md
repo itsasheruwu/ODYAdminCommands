@@ -2,7 +2,7 @@
 
 `ODYAdminCommands` is a Paper `1.21.11` admin plugin focused on lightweight staff stealth tools.
 
-Current version: `1.0.3`  
+Current version: `1.0.4`  
 Author: `starboyash`
 
 ## Features
@@ -19,6 +19,9 @@ Author: `starboyash`
   - Truncates `latest.log`
   - Deletes crash reports
   - Uses ProtocolLib to hide the command from server console logging when ProtocolLib is installed
+- `/sudo <player> <command>`
+  - Runs a command as another online player
+  - Supports player and command-name tab completion
 - Bypass visibility
   - Players with bypass permission can still see vanished and invisible staff
   - Vanished players show in tab as red with strikethrough for bypass viewers
@@ -35,6 +38,7 @@ Author: `starboyash`
 | `/vanish` | Toggle offline-style vanish | `odyadmincommands.vanish` |
 | `/invis` | Toggle physical invisibility | `odyadmincommands.invis` |
 | `/cleanlogs` | Clean server logs and crash reports | `odyadmincommands.cleanlogs` |
+| `/sudo <player> <command>` | Run a command as another online player | `odyadmincommands.sudo` |
 
 Internal command:
 
@@ -48,6 +52,7 @@ Internal command:
 | `odyadmincommands.vanish` | Allows `/vanish` | `op` |
 | `odyadmincommands.invis` | Allows `/invis` | `op` |
 | `odyadmincommands.cleanlogs` | Allows `/cleanlogs` | `op` |
+| `odyadmincommands.sudo` | Allows `/sudo <player> <command>` | `op` |
 | `odyadmincommands.vanish.bypass` | Lets staff see vanished/invisible players and bypass offline-style checks | `op` |
 
 ## Vanish Chat Confirmation
@@ -95,7 +100,7 @@ Build with the Gradle wrapper:
 Output jar:
 
 ```text
-build/libs/ODYAdminCommands-1.0.3.jar
+build/libs/ODYAdminCommands-1.0.4.jar
 ```
 
 ## Notes
