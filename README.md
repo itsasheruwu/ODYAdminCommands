@@ -2,7 +2,7 @@
 
 `ODYAdminCommands` is a Paper `1.21.11` admin plugin focused on lightweight staff stealth tools.
 
-Current version: `1.0.2`  
+Current version: `1.0.3`  
 Author: `starboyash`
 
 ## Features
@@ -94,7 +94,7 @@ Build with the Gradle wrapper:
 Output jar:
 
 ```text
-build/libs/ODYAdminCommands-1.0.2.jar
+build/libs/ODYAdminCommands-1.0.3.jar
 ```
 
 ## Notes

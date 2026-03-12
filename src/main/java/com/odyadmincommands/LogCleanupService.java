@@ -15,7 +15,7 @@ public final class LogCleanupService {
     }
 
     public CleanupResult clean() {
-        Path serverRoot = this.plugin.getDataFolder().toPath().getParent();
+        Path serverRoot = resolveServerRoot();
         if (serverRoot == null) {
             return new CleanupResult(0, 0, true);
         }
@@ -28,6 +28,21 @@ public final class LogCleanupService {
         success &= cleanDirectory(serverRoot.resolve("crash-reports"), deletedCrashLogs);
 
         return new CleanupResult(deletedLogs.get(), deletedCrashLogs.get(), success);
+    }
+
+    private Path resolveServerRoot() {
+        Path pluginDataFolder = this.plugin.getDataFolder().toPath();
+        Path pluginsDirectory = pluginDataFolder.getParent();
+        if (pluginsDirectory == null) {
+            return null;
+        }
+
+        Path serverRoot = pluginsDirectory.getParent();
+        if (serverRoot != null) {
+            return serverRoot;
+        }
+
+        return pluginsDirectory;
     }
 
     private boolean cleanLogsDirectory(Path logsDirectory, AtomicInteger deletedLogs) {
