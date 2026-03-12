@@ -1,2 +1,7 @@
 offline-command-aliases:
   - msg
+auto-update:
+  enabled: true
+  github-owner: itsasheruwu
+  github-repo: ODYAdminCommands
+  asset-name: ""

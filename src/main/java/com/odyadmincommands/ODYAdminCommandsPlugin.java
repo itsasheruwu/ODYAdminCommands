@@ -9,12 +9,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class ODYAdminCommandsPlugin extends JavaPlugin {
     private VanishService vanishService;
+    private AutoUpdateService autoUpdateService;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
 
         this.vanishService = new VanishService(this);
+        this.autoUpdateService = new AutoUpdateService(this);
         this.vanishService.load();
 
         PluginCommand vanishCommand = getCommand("vanish");
@@ -47,6 +49,7 @@ public final class ODYAdminCommandsPlugin extends JavaPlugin {
 
         this.vanishService.refreshConfiguredOfflineAliases();
         this.vanishService.reapplyToOnlinePlayers();
+        this.autoUpdateService.checkForUpdatesOnStartup();
         getLogger().info("ODYAdminCommands enabled.");
     }
 

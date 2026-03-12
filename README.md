@@ -2,7 +2,7 @@
 
 `ODYAdminCommands` is a Paper `1.21.11` admin plugin focused on lightweight staff stealth tools.
 
-Current version: `1.0.0`  
+Current version: `1.0.1`  
 Author: `starboyash`
 
 ## Features
@@ -19,6 +19,9 @@ Author: `starboyash`
   - Vanished players show in tab as red with strikethrough for bypass viewers
 - Persistent state
   - Vanish and invis states survive reconnects and restarts
+- Auto update
+  - Checks the latest GitHub release on startup
+  - Downloads a newer jar into Paper's update folder for the next restart
 
 ## Commands
 
@@ -59,6 +62,21 @@ offline-command-aliases:
 
 `offline-command-aliases` controls which private-message style commands should treat vanished players as offline for non-bypass players.
 
+Auto update settings:
+
+```yaml
+auto-update:
+  enabled: true
+  github-owner: itsasheruwu
+  github-repo: ODYAdminCommands
+  asset-name: ""
+```
+
+- `enabled`: turns startup update checks on or off
+- `github-owner`: GitHub owner or organization
+- `github-repo`: GitHub repository name
+- `asset-name`: optional exact asset name to download; when blank, the first `.jar` from the latest release is used
+
 ## Build
 
 Requirements:
@@ -74,7 +92,7 @@ Build with the Gradle wrapper:
 Output jar:
 
 ```text
-build/libs/ODYAdminCommands-1.0.0.jar
+build/libs/ODYAdminCommands-1.0.1.jar
 ```
 
 ## Notes
@@ -82,3 +100,4 @@ build/libs/ODYAdminCommands-1.0.0.jar
 - Target platform: Paper `1.21.11`
 - Designed to remain usable for Bedrock players joining through Geyser
 - No Floodgate integration is required for the current feature set
+- Auto-update stages the new jar for the next restart; it does not hot-swap the running plugin
