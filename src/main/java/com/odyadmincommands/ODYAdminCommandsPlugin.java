@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class ODYAdminCommandsPlugin extends JavaPlugin {
     private VanishService vanishService;
     private AutoUpdateService autoUpdateService;
+    private LogCleanupService logCleanupService;
 
     @Override
     public void onEnable() {
@@ -17,6 +18,7 @@ public final class ODYAdminCommandsPlugin extends JavaPlugin {
 
         this.vanishService = new VanishService(this);
         this.autoUpdateService = new AutoUpdateService(this);
+        this.logCleanupService = new LogCleanupService(this);
         this.vanishService.load();
 
         PluginCommand vanishCommand = getCommand("vanish");
@@ -32,6 +34,10 @@ public final class ODYAdminCommandsPlugin extends JavaPlugin {
         if (confirmChatCommand == null) {
             throw new IllegalStateException("Command 'vanishchatconfirm' was not defined in plugin.yml");
         }
+        PluginCommand cleanLogsCommand = getCommand("cleanlogs");
+        if (cleanLogsCommand == null) {
+            throw new IllegalStateException("Command 'cleanlogs' was not defined in plugin.yml");
+        }
 
         vanishCommand.setExecutor(new ToggleStateCommand(
             "/vanish",
@@ -44,8 +50,10 @@ public final class ODYAdminCommandsPlugin extends JavaPlugin {
             enabled -> enabled ? "Invis enabled." : "Invis disabled."
         ));
         confirmChatCommand.setExecutor(new ConfirmChatCommand(this.vanishService));
+        cleanLogsCommand.setExecutor(new CleanLogsCommand(this.logCleanupService));
 
         Bukkit.getPluginManager().registerEvents(new VanishListener(this, this.vanishService), this);
+        Bukkit.getPluginManager().registerEvents(new SilentCommandListener(cleanLogsCommand), this);
 
         this.vanishService.refreshConfiguredOfflineAliases();
         this.vanishService.reapplyToOnlinePlayers();

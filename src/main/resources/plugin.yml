@@ -19,12 +19,20 @@ commands:
     usage: /vanishchatconfirm <token>
     permission: odyadmincommands.vanish
     permission-message: You do not have permission to use this command.
+  cleanlogs:
+    description: Clean the server logs and crash reports.
+    usage: /cleanlogs
+    permission: odyadmincommands.cleanlogs
+    permission-message: You do not have permission to use this command.
 permissions:
   odyadmincommands.vanish:
     description: Allows the player to toggle offline-style vanish.
     default: op
   odyadmincommands.invis:
     description: Allows the player to toggle invisibility.
+    default: op
+  odyadmincommands.cleanlogs:
+    description: Allows the player to clean server logs and crash reports.
     default: op
   odyadmincommands.vanish.bypass:
     description: Allows the player to see vanished or invisible players and bypass offline-style vanish checks.
