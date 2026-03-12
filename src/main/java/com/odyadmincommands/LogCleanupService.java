@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class LogCleanupService {
@@ -31,18 +32,19 @@ public final class LogCleanupService {
     }
 
     private Path resolveServerRoot() {
-        Path pluginDataFolder = this.plugin.getDataFolder().toPath();
+        Path worldContainer = Bukkit.getWorldContainer().toPath().toAbsolutePath().normalize();
+        if (Files.isDirectory(worldContainer)) {
+            return worldContainer;
+        }
+
+        Path pluginDataFolder = this.plugin.getDataFolder().toPath().toAbsolutePath().normalize();
         Path pluginsDirectory = pluginDataFolder.getParent();
         if (pluginsDirectory == null) {
             return null;
         }
 
         Path serverRoot = pluginsDirectory.getParent();
-        if (serverRoot != null) {
-            return serverRoot;
-        }
-
-        return pluginsDirectory;
+        return serverRoot != null ? serverRoot.toAbsolutePath().normalize() : pluginsDirectory;
     }
 
     private boolean cleanLogsDirectory(Path logsDirectory, AtomicInteger deletedLogs) {
