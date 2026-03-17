@@ -11,10 +11,16 @@ public final class ODYAdminCommandsPlugin extends JavaPlugin {
     private VanishService vanishService;
     private AutoUpdateService autoUpdateService;
     private LogCleanupService logCleanupService;
+    private FlightStorageManager flightStorageManager;
+    private MessageHelper messageHelper;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
+
+        this.flightStorageManager = new FlightStorageManager(this);
+        this.flightStorageManager.load();
+        this.messageHelper = new MessageHelper(this);
 
         this.vanishService = new VanishService(this);
         this.autoUpdateService = new AutoUpdateService(this);
@@ -42,6 +48,10 @@ public final class ODYAdminCommandsPlugin extends JavaPlugin {
         if (sudoCommand == null) {
             throw new IllegalStateException("Command 'sudo' was not defined in plugin.yml");
         }
+        PluginCommand mayflyCommand = getCommand("mayfly");
+        if (mayflyCommand == null) {
+            throw new IllegalStateException("Command 'mayfly' was not defined in plugin.yml");
+        }
 
         vanishCommand.setExecutor(new ToggleStateCommand(
             "/vanish",
@@ -57,9 +67,12 @@ public final class ODYAdminCommandsPlugin extends JavaPlugin {
         cleanLogsCommand.setExecutor(new CleanLogsCommand(this.logCleanupService));
         sudoCommand.setExecutor(new SudoCommand());
         sudoCommand.setTabCompleter(new SudoTabCompleter());
+        mayflyCommand.setExecutor(new MayFlyCommand(this));
+        mayflyCommand.setTabCompleter(new MayFlyTabCompleter());
 
         Bukkit.getPluginManager().registerEvents(new VanishListener(this, this.vanishService), this);
         Bukkit.getPluginManager().registerEvents(new SilentCommandListener(cleanLogsCommand), this);
+        Bukkit.getPluginManager().registerEvents(new FlightJoinListener(this), this);
         if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
             new ProtocolLibCleanLogsIntegration(this, cleanLogsCommand).register();
             getLogger().info("ProtocolLib detected. /cleanlogs console logging will be suppressed.");
@@ -76,6 +89,9 @@ public final class ODYAdminCommandsPlugin extends JavaPlugin {
         if (this.vanishService != null) {
             this.vanishService.save();
         }
+        if (this.flightStorageManager != null) {
+            this.flightStorageManager.save();
+        }
     }
 
     public Set<String> loadOfflineCommandAliases() {
@@ -84,5 +100,13 @@ public final class ODYAdminCommandsPlugin extends JavaPlugin {
             .map(alias -> alias.toLowerCase(Locale.ROOT))
             .filter(alias -> !alias.isBlank())
             .collect(java.util.stream.Collectors.toUnmodifiableSet());
+    }
+
+    public FlightStorageManager getStorageManager() {
+        return this.flightStorageManager;
+    }
+
+    public MessageHelper getMessageHelper() {
+        return this.messageHelper;
     }
 }

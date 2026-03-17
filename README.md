@@ -2,7 +2,7 @@
 
 `ODYAdminCommands` is a Paper `1.21.11` admin plugin focused on lightweight staff stealth tools.
 
-Current version: `1.0.5`  
+Current version: `1.0.6`  
 Author: `starboyash`
 
 ## Features
@@ -22,6 +22,10 @@ Author: `starboyash`
 - `/sudo <player> <command>`
   - Runs a command as another online player
   - Supports player and command-name tab completion
+- `/mayfly <player> [on|off|toggle]`
+  - Grants or revokes persistent survival/adventure flight for a player
+  - Reapplies saved flight state when players rejoin
+  - Uses configurable messages and default mode settings
 - Bypass visibility
   - Players with bypass permission can still see vanished and invisible staff
 - Persistent state
@@ -38,6 +42,7 @@ Author: `starboyash`
 | `/invis` | Toggle physical invisibility | `odyadmincommands.invis` |
 | `/cleanlogs` | Clean server logs and crash reports | `odyadmincommands.cleanlogs` |
 | `/sudo <player> <command>` | Run a command as another online player | `odyadmincommands.sudo` |
+| `/mayfly <player> [on\|off\|toggle]` | Grant or revoke persistent flight | `odyadmincommands.mayfly` |
 
 Internal command:
 
@@ -53,6 +58,9 @@ Internal command:
 | `odyadmincommands.cleanlogs` | Allows `/cleanlogs` | `op` |
 | `odyadmincommands.sudo` | Allows `/sudo <player> <command>` | `op` |
 | `odyadmincommands.vanish.bypass` | Lets staff see vanished/invisible players and bypass offline-style checks | `op` |
+| `odyadmincommands.mayfly` | Allows `/mayfly` | `op` |
+| `odyadmincommands.mayfly.others` | Allows targeting other players with `/mayfly` | `op` |
+| `odyadmincommands.mayfly.notify` | Reserved for staff flight notifications | `op` |
 
 ## Vanish Chat Confirmation
 
@@ -82,9 +90,15 @@ Auto update settings:
 ```yaml
 auto-update:
   enabled: true
+
+mayfly:
+  default-mode: toggle
+  flight-speed: 0.1
 ```
 
 - `enabled`: turns startup update checks on or off
+- `default-mode`: fallback mode when `/mayfly` is run without `on`, `off`, or `toggle`
+- `flight-speed`: applied fly speed when flight is enabled
 - The updater is hardcoded to `itsasheruwu/ODYAdminCommands`
 - The updater is hardcoded to download the release asset named `ODYAdminCommands.jar`
 
@@ -103,7 +117,7 @@ Build with the Gradle wrapper:
 Output jar:
 
 ```text
-build/libs/ODYAdminCommands-1.0.5.jar
+build/libs/ODYAdminCommands-1.0.6.jar
 ```
 
 ## Notes

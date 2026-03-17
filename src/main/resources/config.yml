@@ -6,3 +6,17 @@ offline-command-aliases:
   - pm
 auto-update:
   enabled: true
+
+mayfly:
+  default-mode: toggle
+  flight-speed: 0.1
+
+messages:
+  enabled: "Enabled flight for %player%"
+  disabled: "Disabled flight for %player%"
+  player-not-found: "Player not found or offline."
+  no-permission: "You do not have permission to do that."
+  no-permission-others: "You do not have permission to target other players."
+  invalid-mode: "Invalid mode. Use on, off, or toggle."
+  target-received-enabled: "Flight has been enabled for you by %executor%"
+  target-received-disabled: "Flight has been disabled for you by %executor%"

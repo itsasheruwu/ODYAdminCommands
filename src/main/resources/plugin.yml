@@ -31,6 +31,11 @@ commands:
     usage: /sudo <player> <command>
     permission: odyadmincommands.sudo
     permission-message: You do not have permission to use this command.
+  mayfly:
+    description: Grant or revoke survival flight for a player.
+    usage: /mayfly <player> [on|off|toggle]
+    permission: odyadmincommands.mayfly
+    permission-message: You do not have permission to use this command.
 permissions:
   odyadmincommands.vanish:
     description: Allows the player to toggle offline-style vanish.
@@ -46,4 +51,13 @@ permissions:
     default: op
   odyadmincommands.vanish.bypass:
     description: Allows the player to see vanished or invisible players and bypass offline-style vanish checks.
+    default: op
+  odyadmincommands.mayfly:
+    description: Allows toggling flight.
+    default: op
+  odyadmincommands.mayfly.others:
+    description: Allows adjusting flight for other players.
+    default: op
+  odyadmincommands.mayfly.notify:
+    description: Receive staff notifications when flight is changed.
     default: op

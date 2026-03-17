@@ -161,7 +161,14 @@ public final class VanishService {
     }
 
     public void updateAppearance(Player player) {
-        player.playerListName(Component.text(player.getName()));
+        player.playerListName(formatPlayerListName(player));
+    }
+
+    private Component formatPlayerListName(Player player) {
+        if (!isVanished(player)) {
+            return Component.text(player.getName());
+        }
+        return Component.text(player.getName(), NamedTextColor.RED, TextDecoration.STRIKETHROUGH);
     }
 
     public Component offlineTargetMessage(String input) {
